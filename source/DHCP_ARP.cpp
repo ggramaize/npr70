@@ -647,8 +647,8 @@ void ARP_RX_packet_treatment (unsigned char* ARP_RX_packet, int size) {
 	unsigned int ARP_opcode;
 	unsigned long int ARP_sender_IP;
 	unsigned long int ARP_target_IP;
-	ARP_protocol_type = ARP_RX_packet[16]*0x100 + ARP_RX_packet[17];
-	ARP_opcode = ARP_RX_packet[20]*0x100 + ARP_RX_packet[21];
+	ARP_protocol_type = (ARP_RX_packet[16] << 8) + ARP_RX_packet[17];
+	ARP_opcode = (ARP_RX_packet[20] << 8) + ARP_RX_packet[21];
 	if ( (ARP_protocol_type == 0x0800) && (ARP_opcode == 0x0001) ) { // request
 		//printf ("ARP request\r\n");
 		ARP_sender_IP = IP_char2int (ARP_RX_packet+28);

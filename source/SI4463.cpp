@@ -347,7 +347,7 @@ int SI4463_configure_from_h(SI4463_Chip* SI4463, unsigned char* radio_config_dat
 	
 	// specific Max size field 2 
 	unsigned char radio_config_ter[10] = {0x11, 0x12, 0x02, 0x11, 0x00, 0xFF}; 
-	radio_config_ter[4] = (SI4463_CONF_max_field2_size & 0x1F00 )/ 0x100 ;
+	radio_config_ter[4] = (SI4463_CONF_max_field2_size & 0x1F00 ) >> 8 ;
 	radio_config_ter[5] = SI4463_CONF_max_field2_size & 0x00FF;
 	SI4463_send_command(SI4463, radio_config_ter, 6);
 	answer_loc = SI4463_CTS_read_answer(SI4463, SI_trash, 0, 800);
@@ -709,7 +709,7 @@ void SI4463_RX_IT() {
 		SI4463_read_FRR (G_SI4463, FRR);
 		IT_SYNC_detected = FRR[1] & 0x01;
 		IT_FIFO_almost_full = FRR[0] & 0x01;
-		IT_pckt_RX = (FRR[0] & 0x10) / 0x10; 
+		IT_pckt_RX = (FRR[0] & 0x10) >> 4; 
 		Synth_SYNC_detected = IT_SYNC_detected ^ Treated_SYNC_detected; //Xor
 		Synth_FIFO_almost_full = IT_FIFO_almost_full ^ Treated_FIFO_almost_full;
 		Synth_pckt_RX = IT_pckt_RX ^ Treated_pckt_RX;
@@ -750,9 +750,9 @@ void SI4463_RX_IT() {
 
 				RX_FIFO_data[RX_FIFO_WR_point & RX_FIFO_mask] = RX_timer & 0xFF; //LSB
 				RX_FIFO_WR_point++;
-				RX_FIFO_data[RX_FIFO_WR_point & RX_FIFO_mask] = (RX_timer & 0xFF00) / 0x100;
+				RX_FIFO_data[RX_FIFO_WR_point & RX_FIFO_mask] = (RX_timer & 0xFF00) >> 8;
 				RX_FIFO_WR_point++;
-				RX_FIFO_data[RX_FIFO_WR_point & RX_FIFO_mask] = (RX_timer & 0xFF0000) / 0x10000; //MSB
+				RX_FIFO_data[RX_FIFO_WR_point & RX_FIFO_mask] = (RX_timer & 0xFF0000) >> 16; //MSB
 				RX_FIFO_WR_point++;
 				RX_FIFO_data[RX_FIFO_WR_point & RX_FIFO_mask] = RSSI; //RSSI
 				RX_FIFO_WR_point++;
@@ -1094,8 +1094,8 @@ void SI4463_HW_TX_IT() {
 	
 	do {
 		SI4463_read_FRR (G_SI4463, FRR);
-		IT_FIFO_almost_empty = (FRR[0] & 0x02 ) /0x02;
-		IT_pckt_sent = (FRR[0] & 0x20 ) /0x20;
+		IT_FIFO_almost_empty = (FRR[0] & 0x02 ) >> 1;
+		IT_pckt_sent = (FRR[0] & 0x20 ) >> 1;
 	
 		Synth_FIFO_almost_empty = IT_FIFO_almost_empty ^ Treated_FIFO_almost_empty;
 		Synth_pckt_sent = IT_pckt_sent ^ Treated_pckt_sent;

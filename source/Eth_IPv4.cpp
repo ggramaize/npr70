@@ -27,14 +27,14 @@ static int temp_Eth_buff_size = 0;
 
 unsigned long int IP_char2int(unsigned char* IP_char) {
 	unsigned long int result;
-	result = 0x1000000*IP_char[0] + 0x10000*IP_char[1] + 0x100*IP_char[2] + IP_char[3];
+	result = (IP_char[0] << 24) + (IP_char[1] << 16) + (IP_char[2] << 8) + IP_char[3];
 	return result;
 }
 
 void IP_int2char (unsigned long int IP_int, unsigned char* IP_char) {
-	IP_char[0] = (IP_int & 0xFF000000) / 0x1000000;
-	IP_char[1] = (IP_int & 0x00FF0000) / 0x10000;
-	IP_char[2] = (IP_int & 0x0000FF00) / 0x100;
+	IP_char[0] = (IP_int & 0xFF000000) >> 24;
+	IP_char[1] = (IP_int & 0x00FF0000) >> 16;
+	IP_char[2] = (IP_int & 0x0000FF00) >> 8;
 	IP_char[3] = (IP_int & 0xFF);
 } 
 
@@ -96,7 +96,7 @@ int Eth_RX_dequeue (W5500_chip* W5500) {
 			//	W5500_write_TX_buffer(W5500, RTP_SOCKET, RX_data+44, mac_size-44, 0);
 			//} 
 			
-			ethertype = RX_data[14]*0x100 + RX_data[15];
+			ethertype = (RX_data[14] << 8) + RX_data[15];
 			
 			if (ethertype == 0x0806) { //ARP packet received
 				//printf("ARP packet received!\r\n");

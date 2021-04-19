@@ -166,7 +166,7 @@ void radio_RX_FIFO_dequeue (W5500_chip* W5500) {
 				if ( (protocol == 0x01) && (LID < radio_addr_table_size) ) { //RAW ETHERNET
 					segment_size = size_wo_FEC - 3;
 					segmenter_byte = data_RX[2];
-					pkt_counter = (segmenter_byte & 0xF0) / 0x10; 
+					pkt_counter = (segmenter_byte & 0xF0) >> 4; 
 					is_last_seg = segmenter_byte & 0x08;
 					seg_counter = segmenter_byte & 0x07;
 					//printf("RX seg:%02X\r\n", segmenter_byte);
@@ -196,7 +196,7 @@ void radio_RX_FIFO_dequeue (W5500_chip* W5500) {
 					//printf("IPv4 fr received\r\n");
 					segment_size = size_wo_FEC - 3;
 					segmenter_byte = data_RX[2];
-					pkt_counter = (segmenter_byte & 0xF0) / 0x10; 
+					pkt_counter = (segmenter_byte & 0xF0) >> 4; 
 					is_last_seg = segmenter_byte & 0x08;
 					seg_counter = segmenter_byte & 0x07;
 					//printf("RX seg:%02X\r\n", segmenter_byte);
