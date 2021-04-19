@@ -162,6 +162,7 @@ extern LAN_conf_T LAN_conf_saved;
 extern LAN_conf_T LAN_conf_applied; 
 
 extern unsigned char CONF_modem_MAC[6]; 
+extern unsigned char CONF_Eth_mode;
 
 #define radio_addr_table_size 7
 extern char CONF_radio_my_callsign[16];

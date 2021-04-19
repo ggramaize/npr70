@@ -260,7 +260,8 @@ void W5500_re_configure_gateway(W5500_chip* SPI_p_loc) {
 void W5500_re_configure_periodic_call(W5500_chip* SPI_p_loc) {
 	unsigned char data[10];
 	if (W5500_configured == 4) { // reboot
-		W5500_write_byte(SPI_p_loc, 0x002E, 0x00, 0xC8);//!!! 0xC8
+		//W5500_write_byte(SPI_p_loc, 0x002E, 0x00, 0xC8);//!!! 0xC8
+		W5500_write_byte(SPI_p_loc, 0x002E, 0x00, (CONF_Eth_mode << 3) + 0xC0);//!!! 0xC8 0xF8
 		W5500_configured = 1; //configured
 	}
 	if (W5500_configured == 3) { //wait 
@@ -279,7 +280,8 @@ void W5500_re_configure_periodic_call(W5500_chip* SPI_p_loc) {
 			IP_int2char (0x01010101, data);
 			W5500_write_long(SPI_p_loc, 0x0001, 0x00, data, 4);
 		}
-		W5500_write_byte(SPI_p_loc, 0x002E, 0x00, 0x48); // Phy OFF !!! 0x48
+		//W5500_write_byte(SPI_p_loc, 0x002E, 0x00, 0x48); // Phy OFF !!! 0x48
+		W5500_write_byte(SPI_p_loc, 0x002E, 0x00, (CONF_Eth_mode << 3) + 0x40); // 0x48 0x78
 		W5500_configured = 3; //waiting reboot
 	}
 	
@@ -296,9 +298,11 @@ void W5500_initial_configure(W5500_chip* SPI_p_loc) {
 	W5500_write_byte(SPI_p_loc, 0x0000, W5500_Common_register_block, 0x00);//0x10
 	//wait_ms(1600);
 	//W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, 0xC8);
-	W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, 0x48);//48 for 10MB full duplex / 40 half duplex !!!
+	//W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, 0x48);//48 for 10MB full duplex / 40 half duplex !!!
+	W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, (CONF_Eth_mode << 3) + 0x40);//48 78 for 10MB full duplex / 40 half duplex !!!
 	wait_ms(1600);
-	W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, 0xC8);//4c8 for 10MB full duplex / c0 half duplexc8 !!!
+	//W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, 0xC8);//4c8 for 10MB full duplex / c0 half duplexc8 !!!
+	W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, (CONF_Eth_mode << 3) + 0xC0);//c8 F8 for 10MB full duplex / c0 half duplexc8 !!!
 	//W5500_write_byte(SPI_p_loc, 0x002E, W5500_Common_register_block, 0xC8);
 	//wait_ms(1600);
     

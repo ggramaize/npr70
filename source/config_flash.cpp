@@ -205,6 +205,13 @@ void apply_config_from_raw_string(npr_config* data_r) {
 	CONF_transmission_method = data_r->transmission_method;
 	CONF_master_FDD = data_r->master_fdd;
 	CONF_master_down_IP = data_r->master_fdd_down_IP;
+
+	if ((data_r->eth_mode >= 0xF0) && (data_r->eth_mode <= 0xF7)){
+		CONF_Eth_mode = data_r->eth_mode - 0xF0;
+	}
+	else {
+		CONF_Eth_mode = 0x07;
+	}
 	
 	if (LAN_conf_applied.DHCP_server_active == 1) {
 		LAN_conf_applied.DHCP_range_start = CONF_radio_IP_start;
@@ -252,4 +259,5 @@ void write_config_to_raw_string (npr_config* data_r) {
 	data_r->transmission_method = CONF_transmission_method;
 	data_r->master_fdd= CONF_master_FDD;
 	data_r->master_fdd_down_IP = CONF_master_down_IP;
+	data_r->eth_mode = CONF_Eth_mode + 0xF0;
 }
