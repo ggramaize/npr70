@@ -1,9 +1,12 @@
 # New Packet Radio
 
-   This is the source code for the NPR-70 modem firmware by F4HDK.
+Firmware for NPR-70 modems
 
-   This code is based on the 2020_02_23 release available at https://hackaday.io/project/164092-npr-new-packet-radio .
+## Authors
+Original source code has been developed by F4HDK and it includes contributions from Edouard Lafargue (SNMP Support, settings refactoring for readability, and memory usage reduction).
 
-   It adds a couple of features such as SNMP support (see the included MIB), as well as a refactor of settings (which makes it possible to update settings across firmware releases if needed) and reduced memory usage.
+# Known issues
 
-Ed
+  * Improper bridging behaviour: the original source code made strange implications regarding the topology of a network, which impedes using anything beyond IPv4, and making the modems non transparent to routed trafic (fix currently in WIP).
+  * Telnet requests to a modem are not handled if the request comes from the radio interface. So far the management socket is bound to the Ethernet device.
+
