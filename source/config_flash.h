@@ -55,7 +55,7 @@ typedef struct {
 	uint8_t  master_fdd;
 	uint32_t master_fdd_down_IP;
 	uint8_t eth_mode;
-	uint8_t static_client_entries[178];
+	uint8_t static_client_entries[177];
 } __attribute__((packed)) npr_config; // Ensure the structure is packed to have predictable results in the flash!
 
 #define config_size sizeof(npr_config)
