@@ -1095,7 +1095,7 @@ void SI4463_HW_TX_IT() {
 	do {
 		SI4463_read_FRR (G_SI4463, FRR);
 		IT_FIFO_almost_empty = (FRR[0] & 0x02 ) >> 1;
-		IT_pckt_sent = (FRR[0] & 0x20 ) >> 1;
+		IT_pckt_sent = (FRR[0] & 0x20 ) >> 5;
 	
 		Synth_FIFO_almost_empty = IT_FIFO_almost_empty ^ Treated_FIFO_almost_empty;
 		Synth_pckt_sent = IT_pckt_sent ^ Treated_pckt_sent;
